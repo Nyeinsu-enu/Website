@@ -17,8 +17,9 @@ const animals = ["🐶", "🐶", "🐱", "🐱", "🐰", "🐰", "🐼", "🐼",
 
 // ========== Settings Storage Logic ==========
 // LocalStorage ကနေ အရင်သိမ်းခဲ့တဲ့ setting တွေကို ယူမယ်
-let bgmEnabled = localStorage.getItem("bgmEnabled") !== "false"; // Default true
-let sfxEnabled = localStorage.getItem("sfxEnabled") !== "false"; // Default true
+// LocalStorage ကနေ string အနေနဲ့ရလာမှာမလို့ တကယ့် boolean (true/false) ဖြစ်အောင် စနစ်တကျ စစ်ရပါမယ်
+let bgmEnabled = localStorage.getItem("bgmEnabled") === null ? true : localStorage.getItem("bgmEnabled") === "true";
+let sfxEnabled = localStorage.getItem("sfxEnabled") === null ? true : localStorage.getItem("sfxEnabled") === "true";
 
 // ========== BGM Section ==========
 const BGM_URL = "https://soundimage.org/wp-content/uploads/2017/05/Hypnotic-Puzzle.mp3";
@@ -42,7 +43,9 @@ function startBGM() {
 function setBGMMuted(muted) {
     bgmEnabled = !muted;
     bgmAudio.muted = muted;
-    localStorage.setItem("bgmEnabled", bgmEnabled);
+    // string အနေနဲ့ အတိအကျ သိမ်းလိုက်တာ ပိုစိတ်ချရပါတယ်
+    localStorage.setItem("bgmEnabled", bgmEnabled.toString()); 
+    
     if (bgmEnabled && bgmAudio.paused) {
         bgmAudio.play();
     } else if (!bgmEnabled) {
@@ -55,8 +58,9 @@ const sfx = (() => {
     const ac = new (window.AudioContext || window.webkitAudioContext)();
     
     function tone(freq, type, vol, dur, attack, decay) {
-        if (!sfxEnabled) return;
-        if (ac.state === 'suspended') ac.resume();
+        // ✨ ဒီနေရာမှာ sfxEnabled ကို အမြဲစစ်တယ်
+        if (!sfxEnabled || ac.state === 'suspended') return; 
+        
         const o = ac.createOscillator();
         const g = ac.createGain();
         o.connect(g); g.connect(ac.destination);
@@ -71,24 +75,39 @@ const sfx = (() => {
     return {
         flip:    () => tone(600, 'sine', 0.2, 0.08, 0.005, 0.02),
         match:   () => {
+            // ✨ setTimeout ထဲမှာလည်း sfxEnabled ကို ထပ်စစ်ပေးရမယ်
+            if (!sfxEnabled) return; 
             tone(523, 'triangle', 0.3, 0.12, 0.01, 0.04);
-            setTimeout(() => tone(659, 'triangle', 0.3, 0.12, 0.01, 0.04), 80);
+            setTimeout(() => { if(sfxEnabled) tone(659, 'triangle', 0.3, 0.12, 0.01, 0.04); }, 80);
         },
         wrong:   () => {
+            if (!sfxEnabled) return;
             tone(300, 'sawtooth', 0.25, 0.1, 0.01, 0.05);
-            setTimeout(() => tone(220, 'sawtooth', 0.2, 0.15, 0.01, 0.06), 100);
+            setTimeout(() => { if(sfxEnabled) tone(220, 'sawtooth', 0.2, 0.15, 0.01, 0.06); }, 100);
         },
         coin:    () => { 
+            if (!sfxEnabled) return;
             tone(880, 'sine', 0.2, 0.08, 0.005, 0.02); 
-            setTimeout(() => tone(1100, 'sine', 0.15, 0.07, 0.005, 0.02), 60); 
+            setTimeout(() => { if(sfxEnabled) tone(1100, 'sine', 0.15, 0.07, 0.005, 0.02); }, 60); 
         },
-        win:     () => { [523, 659, 784].forEach((f, i) => setTimeout(() => tone(f, 'sine', 0.3, 0.2), i * 100)); },
-        fail:    () => { [330, 220].forEach((f, i) => setTimeout(() => tone(f, 'sawtooth', 0.3, 0.3), i * 150)); },
-        // ✅ ဒီနေရာမှာ reveal function လေး ထည့်လိုက်ပါပြီ
-        reveal:  () => { tone(1200, 'sine', 0.2, 0.3, 0.05, 0.1); }, 
+        win:     () => { 
+            if (!sfxEnabled) return;
+            [523, 659, 784].forEach((f, i) => setTimeout(() => { if(sfxEnabled) tone(f, 'sine', 0.3, 0.2); }, i * 100)); 
+        },
+        fail:    () => { 
+            if (!sfxEnabled) return;
+            [330, 220].forEach((f, i) => setTimeout(() => { if(sfxEnabled) tone(f, 'sawtooth', 0.3, 0.3); }, i * 150)); 
+        },
+        reveal:  () => { if(sfxEnabled) tone(1200, 'sine', 0.2, 0.3, 0.05, 0.1); }, 
         setMuted: (muted) => { 
             sfxEnabled = !muted; 
             localStorage.setItem("sfxEnabled", sfxEnabled);
+            // ✨ အသံပိတ်လိုက်တာနဲ့ Audio Context ကိုပါ ရပ်လိုက်မယ်
+            if (muted && ac.state !== 'suspended') {
+                ac.suspend();
+            } else if (!muted && ac.state === 'suspended') {
+                ac.resume();
+            }
         }
     };
 })();
@@ -214,16 +233,25 @@ function startTimer() {
 
 function useEyeBooster() {
     if (totalStars >= 5) {
-        totalStars -= 5;
-        updateStats();
+        totalStars -= 5; // ၅ ခု လျော့လိုက်တယ်
+        
+        // ✨ ဒီစာကြောင်းလေး ထည့်လိုက်ပါ (Data ကို အမြဲတမ်း သိမ်းလိုက်တာ)
+        localStorage.setItem("totalStars", totalStars); 
+        
+        updateStats(); // Screen ပေါ်မှာ ဂဏန်းပြောင်းအောင် လုပ်တယ်
         sfx.reveal();
+        
         document.querySelectorAll(".card").forEach(card => {
             const checkbox = document.getElementById(card.getAttribute("for"));
             if (!checkbox.checked) {
                 checkbox.checked = true;
-                setTimeout(() => { if (!card.classList.contains("matched")) checkbox.checked = false; }, 1500);
+                setTimeout(() => { 
+                    if (!card.classList.contains("matched")) checkbox.checked = false; 
+                }, 1500);
             }
         });
+    } else {
+        alert("Stars မလုံလောက်ပါဘူး!"); // Star မပြည့်ရင် သတိပေးချက်ပြချင်ရင် သုံးလို့ရတယ်
     }
 }
 
