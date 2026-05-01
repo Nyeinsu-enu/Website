@@ -12,29 +12,7 @@ setInterval(() => {
     }
 }, 500);
 
-// =======================
-// Overlay Logic (Session-based)
-// =======================
-function startEverything() {
-    sessionStorage.setItem("seenOverlay", "true");
 
-    const overlay = document.getElementById("welcome-overlay");
-    overlay.style.opacity = "0";
-    overlay.style.visibility = "hidden";
-
-    setTimeout(() => {
-        overlay.style.display = "none";
-        document.body.style.overflow = "auto";
-    }, 1000);
-
-    // TAP TO START နှိပ်တဲ့အချိန် user interaction ရှိပြီဆိုတော့
-    // browser က play ခွင့်ပေးမယ် — ဒီနေရာမှာပဲ play လုပ်ရမယ်
-    if (localStorage.getItem("musicState") !== "off") {
-        music.play().then(() => {
-            updateMusicButton(true);
-        }).catch(e => console.log("Autoplay blocked:", e));
-    }
-}
 
 // =======================
 // Music Controls
@@ -157,17 +135,22 @@ window.addEventListener("load", () => {
 
 });
 
- 
-  //  IIFE က script tag အနေနဲ့ body ပိတ်ခါနီးမှာရှိတယ်။
- //   menu.js မတိုင်ခင် run မယ်၊ ဒါဆို overlay ကို
-//  load event မတိုင်ခင်ကတည်းက ဆုံးဖြတ်နိုင်မယ်။
+window.addEventListener("load", () => {
+    // Theme Restore
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
 
-    (function () {
-        if (sessionStorage.getItem("seenOverlay") === "true") {
-            // Back to Menu ဆိုတော့ overlay မပြဘူး — display:none ဆိုတော့ ဘာမှမလုပ်တော့ဘူး ✅
-            return;
-        }
-        // ပထမဆုံးဝင်တာဆိုတော့ overlay ကိုပြမယ်
-        var overlay = document.getElementById("welcome-overlay");
-        if (overlay) overlay.style.display = "flex";
-    })();
+    // Music Restore - Overlay မရှိတော့လို့ interaction တစ်ခုခုရှိတာနဲ့ တန်းပွင့်အောင်လုပ်မယ်
+    const musicState = localStorage.getItem("musicState");
+    if (musicState !== "off") {
+        updateMusicButton(true);
+        // Browser က autoplay ပိတ်ထားနိုင်လို့ click တစ်ချက်နှိပ်မှ ပွင့်အောင်လုပ်တာပါ
+        document.addEventListener("click", () => {
+            if (music.paused) music.play().catch(() => {});
+        }, { once: true });
+    }
+});
+
+ 
+

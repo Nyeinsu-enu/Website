@@ -8,6 +8,27 @@
 </head>
 <body>
 
+<!-- ===== START SCREEN ===== -->
+<!--
+    display:none အစကတည်းက hidden ဖြစ်နေမယ်။
+    JS IIFE က seenOverlay မရှိရင်သာ flex ပြပြန်မယ်။
+    ဒါဆို Back to Menu နှိပ်တဲ့အခါ flash လုံးဝမဖြစ်တော့ဘူး။
+-->
+<div id="welcome-overlay" onclick="startEverything()" style="display: none;">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="overlay-content">
+        <h1 class="game-title">🐾 Animal Fun World 🐾</h1>
+        <div class="start-button-wrapper">
+            <div class="start-button">
+                <p class="start-text">TAP TO START</p>
+            </div>
+            <div class="start-pulse-ring"></div>
+        </div>
+    </div>
+</div>
+
+
     <!-- Dark Overlay -->
     <div class="overlay"></div>
 

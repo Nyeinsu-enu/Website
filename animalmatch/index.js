@@ -120,3 +120,29 @@ function navTo(url) {
         window.location.href = url;
     }, 200);
 }
+
+  //  IIFE က script tag အနေနဲ့ body ပိတ်ခါနီးမှာရှိတယ်။
+//  load event မတိုင်ခင်ကတည်းက ဆုံးဖြတ်နိုင်မယ်။
+// ၁။ ပထမဆုံး စဝင်တာလားဆိုတာ စစ်တဲ့ Function (IIFE)
+(function () {
+    if (sessionStorage.getItem("seenBlitzOverlay") === "true") {
+        return; // ကြည့်ပြီးသားဆိုရင် ပြန်ထွက်သွားမယ်
+    }
+    const overlay = document.getElementById("welcome-overlay");
+    if (overlay) overlay.style.display = "flex";
+})();
+
+// ၂။ Overlay ကို နှိပ်လိုက်ရင် ပျောက်သွားစေမယ့် Function
+function startEverything() {
+    sessionStorage.setItem("seenBlitzOverlay", "true"); // မှတ်သားထားလိုက်ပြီ
+
+    const overlay = document.getElementById("welcome-overlay");
+    overlay.style.opacity = "0";
+
+    setTimeout(() => {
+        overlay.style.display = "none";
+        // ဒီနေရာမှာ ဂိမ်းကို စတင်စေချင်တဲ့ Function ရှိရင် လှမ်းခေါ်လို့ရတယ်
+        // ဥပမာ - initGame();
+    }, 800);
+}
+

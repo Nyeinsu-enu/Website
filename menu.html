@@ -8,25 +8,6 @@
 </head>
 <body>
 
-<!-- ===== START SCREEN ===== -->
-<!--
-    display:none အစကတည်းက hidden ဖြစ်နေမယ်။
-    JS IIFE က seenOverlay မရှိရင်သာ flex ပြပြန်မယ်။
-    ဒါဆို Back to Menu နှိပ်တဲ့အခါ flash လုံးဝမဖြစ်တော့ဘူး။
--->
-<div id="welcome-overlay" onclick="startEverything()" style="display: none;">
-    <div class="stars"></div>
-    <div class="twinkling"></div>
-    <div class="overlay-content">
-        <h1 class="game-title">🐾 Animal Fun World 🐾</h1>
-        <div class="start-button-wrapper">
-            <div class="start-button">
-                <p class="start-text">TAP TO START</p>
-            </div>
-            <div class="start-pulse-ring"></div>
-        </div>
-    </div>
-</div>
 
 <!-- ===== MENU ===== -->
 <div class="menu-container">
@@ -51,23 +32,6 @@
         <button onclick="toggleTheme()">🌙 Theme</button>
     </div>
 </div>
-
-<!-- 
-    IIFE က script tag အနေနဲ့ body ပိတ်ခါနီးမှာရှိတယ်။
-    menu.js မတိုင်ခင် run မယ်၊ ဒါဆို overlay ကို
-    load event မတိုင်ခင်ကတည်းက ဆုံးဖြတ်နိုင်မယ်။
--->
-<script>
-    (function () {
-        if (sessionStorage.getItem("seenOverlay") === "true") {
-            // Back to Menu ဆိုတော့ overlay မပြဘူး — display:none ဆိုတော့ ဘာမှမလုပ်တော့ဘူး ✅
-            return;
-        }
-        // ပထမဆုံးဝင်တာဆိုတော့ overlay ကိုပြမယ်
-        var overlay = document.getElementById("welcome-overlay");
-        if (overlay) overlay.style.display = "flex";
-    })();
-</script>
 
 <script src="menu.js"></script>
 </body>
