@@ -12,8 +12,6 @@ setInterval(() => {
     }
 }, 500);
 
-
-
 // =======================
 // Music Controls
 // =======================
@@ -45,58 +43,73 @@ function toggleTheme() {
 }
 
 // =======================
-// Navigation
+// Navigation & Persistence Logic
 // =======================
 const clickSound = new Audio("https://www.soundjay.com/buttons/sounds/button-16.mp3");
 
-document.querySelectorAll("button, .game-card").forEach(btn => {
-    btn.addEventListener("click", () => {
-        clickSound.currentTime = 0;
-        clickSound.play();
-    });
-});
-
-function goToBlitz() {
-    localStorage.setItem("shouldPlayMusic", "true");
+function handleNavigation(url) {
+    // ဂိမ်းထဲကို ဝင်တော့မှာဖြစ်လို့ Overlay ကို ကြည့်ပြီးသားအဖြစ် သတ်မှတ်မယ်
+    sessionStorage.setItem("seenWelcome", "true"); 
+    
     clickSound.currentTime = 0;
     clickSound.play();
-    window.location.href = "menu.html";
+    
+    // ခဏစောင့်ပြီးမှ သွားမယ် (Sound လေးကြားရအောင်)
+    setTimeout(() => {
+        window.location.href = url;
+    }, 150);
+}
+
+function goToBlitz() {
+    localStorage.setItem("autoPlayBlitz", "true");
+    handleNavigation("menu.html");
 }
 
 function goToMemory() {
-    localStorage.setItem("autoPlayMemory", "true");
-    clickSound.currentTime = 0;
-    clickSound.play();
-    window.location.href = "./animalmemory/homememory.html";
+    handleNavigation("./animalmemory/homememory.html");
 }
 
 function goToDash() {
-    localStorage.setItem("autoPlayDash", "true");
-    clickSound.currentTime = 0;
-    clickSound.play();
-    window.location.href = "./animaldash/select.html";
+    handleNavigation("./animaldash/select.html");
 }
 
 // =======================
-// Overlay IIFE - load မတိုင်ခင် ချက်ချင်း run
+// Overlay Logic (IIFE)
 // =======================
 (function () {
-    if (sessionStorage.getItem("seenOverlay") === "true") return;
+    // sessionStorage မှာ seenWelcome ရှိနေရင် Overlay ကို လုံးဝ မပြတော့ဘူး
+    if (sessionStorage.getItem("seenWelcome") === "true") {
+        return; 
+    }
     const overlay = document.getElementById("welcome-overlay");
     if (overlay) overlay.style.display = "flex";
 })();
+
+function startEverything() {
+    const overlay = document.getElementById("welcome-overlay");
+    overlay.style.opacity = "0";
+
+    setTimeout(() => {
+        overlay.style.display = "none";
+        document.body.style.overflow = "auto";
+
+        // Music Auto-play check
+        if (localStorage.getItem("musicState") !== "off") {
+            music.play().catch(() => {
+                // Autoplay block ဖြစ်ရင် interaction တစ်ခုခုမှ ဖွင့်မယ်
+                document.addEventListener("click", () => {
+                    if (music.paused) music.play();
+                }, { once: true });
+            });
+            updateMusicButton(true);
+        }
+    }, 800);
+}
 
 // =======================
 // On Page Load
 // =======================
 window.addEventListener("load", () => {
-
-    // ── Overlay Check ───────────────────────────────────────
-    if (sessionStorage.getItem("seenOverlay") === "true") {
-        const overlay = document.getElementById("welcome-overlay");
-        overlay.style.display = "none";
-        document.body.style.overflow = "auto";
-    }
 
     // ── Theme Restore ───────────────────────────────────────
     if (localStorage.getItem("theme") === "dark") {
@@ -105,77 +118,20 @@ window.addEventListener("load", () => {
 
     // ── Music Restore ───────────────────────────────────────
     const musicState = localStorage.getItem("musicState");
-
     if (musicState === "off") {
-        // User က ပိတ်ထားခဲ့တာ — button ကို Off ပြ၊ play မလုပ်ဘူး
         updateMusicButton(false);
-
     } else {
-        // "on" ဖြစ်ဖြစ်၊ null (ပထမဆုံး) ဖြစ်ဖြစ် — music on အနေနဲ့ သဘောထား
-        // Button ကို On ပြမယ် (music သံမထွက်သေးရင်တောင်)
         updateMusicButton(true);
-
-        // Refresh ဆိုတော့ browser autoplay block ဖြစ်နိုင်တယ်
-        // play() try လုပ်မယ်၊ block ဖြစ်ရင် ပထမဆုံး click မှ ဖွင့်မယ်
-        music.play().catch(() => {
-            document.addEventListener("click", () => {
-                if (music.paused) music.play().catch(() => {});
-            }, { once: true });
-        });
+        // Blitz ကနေ ပြန်လာတာဆိုရင် တန်းဖွင့်ပေးမယ်
+        if (localStorage.getItem("autoPlayBlitz") === "true") {
+            music.play().catch(() => {});
+            localStorage.removeItem("autoPlayBlitz");
+        }
     }
-
-    // ── autoPlayBlitz signal ─────────────────────────────────
-    const shouldPlay = localStorage.getItem("autoPlayBlitz");
-    if (shouldPlay === "true") {
-        music.play().catch(() => {
-            document.addEventListener("click", () => music.play(), { once: true });
-        });
-        localStorage.removeItem("autoPlayBlitz");
-    }
-
-});
-
-window.addEventListener("load", () => {
-    // Theme Restore
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-
-    // Music Restore - Overlay မရှိတော့လို့ interaction တစ်ခုခုရှိတာနဲ့ တန်းပွင့်အောင်လုပ်မယ်
-    const musicState = localStorage.getItem("musicState");
-    if (musicState !== "off") {
-        updateMusicButton(true);
-        // Browser က autoplay ပိတ်ထားနိုင်လို့ click တစ်ချက်နှိပ်မှ ပွင့်အောင်လုပ်တာပါ
-        document.addEventListener("click", () => {
-            if (music.paused) music.play().catch(() => {});
-        }, { once: true });
+    
+    // ── Overlay Interaction Support ─────────────────────────
+    // အကယ်၍ Overlay ပျောက်နေရင် (Back to Menu ဆိုရင်) Scroll ကို တန်းဖွင့်ထားမယ်
+    if (sessionStorage.getItem("seenWelcome") === "true") {
+        document.body.style.overflow = "auto";
     }
 });
-
- //  IIFE က script tag အနေနဲ့ body ပိတ်ခါနီးမှာရှိတယ်။
-//  load event မတိုင်ခင်ကတည်းက ဆုံးဖြတ်နိုင်မယ်။
-// ၁။ ပထမဆုံး စဝင်တာလားဆိုတာ စစ်တဲ့ Function (IIFE)
-(function () {
-    if (sessionStorage.getItem("seenBlitzOverlay") === "true") {
-        return; // ကြည့်ပြီးသားဆိုရင် ပြန်ထွက်သွားမယ်
-    }
-    const overlay = document.getElementById("welcome-overlay");
-    if (overlay) overlay.style.display = "flex";
-})();
-
-// ၂။ Overlay ကို နှိပ်လိုက်ရင် ပျောက်သွားစေမယ့် Function
-function startEverything() {
-    sessionStorage.setItem("seenBlitzOverlay", "true"); // မှတ်သားထားလိုက်ပြီ
-
-    const overlay = document.getElementById("welcome-overlay");
-    overlay.style.opacity = "0";
-
-    setTimeout(() => {
-        overlay.style.display = "none";
-        // ဒီနေရာမှာ ဂိမ်းကို စတင်စေချင်တဲ့ Function ရှိရင် လှမ်းခေါ်လို့ရတယ်
-        // ဥပမာ - initGame();
-    }, 800);
-}
-
- 
-
