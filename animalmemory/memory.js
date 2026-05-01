@@ -251,7 +251,7 @@ function useEyeBooster() {
             }
         });
     } else {
-        alert("Stars မလုံလောက်ပါဘူး!"); // Star မပြည့်ရင် သတိပေးချက်ပြချင်ရင် သုံးလို့ရတယ်
+        alert("Not enough star!!"); // Star မပြည့်ရင် သတိပေးချက်ပြချင်ရင် သုံးလို့ရတယ်
     }
 }
 
