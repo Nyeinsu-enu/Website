@@ -52,7 +52,22 @@
     </div>
 </div>
 
-
+<!-- 
+    IIFE က script tag အနေနဲ့ body ပိတ်ခါနီးမှာရှိတယ်။
+    menu.js မတိုင်ခင် run မယ်၊ ဒါဆို overlay ကို
+    load event မတိုင်ခင်ကတည်းက ဆုံးဖြတ်နိုင်မယ်။
+-->
+<script>
+    (function () {
+        if (sessionStorage.getItem("seenOverlay") === "true") {
+            // Back to Menu ဆိုတော့ overlay မပြဘူး — display:none ဆိုတော့ ဘာမှမလုပ်တော့ဘူး ✅
+            return;
+        }
+        // ပထမဆုံးဝင်တာဆိုတော့ overlay ကိုပြမယ်
+        var overlay = document.getElementById("welcome-overlay");
+        if (overlay) overlay.style.display = "flex";
+    })();
+</script>
 
 <script src="menu.js"></script>
 </body>

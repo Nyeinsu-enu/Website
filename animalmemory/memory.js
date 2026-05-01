@@ -84,6 +84,8 @@ const sfx = (() => {
         },
         win:     () => { [523, 659, 784].forEach((f, i) => setTimeout(() => tone(f, 'sine', 0.3, 0.2), i * 100)); },
         fail:    () => { [330, 220].forEach((f, i) => setTimeout(() => tone(f, 'sawtooth', 0.3, 0.3), i * 150)); },
+        // ✅ ဒီနေရာမှာ reveal function လေး ထည့်လိုက်ပါပြီ
+        reveal:  () => { tone(1200, 'sine', 0.2, 0.3, 0.05, 0.1); }, 
         setMuted: (muted) => { 
             sfxEnabled = !muted; 
             localStorage.setItem("sfxEnabled", sfxEnabled);
