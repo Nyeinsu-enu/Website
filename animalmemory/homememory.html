@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animal Memory</title>
+<link rel="stylesheet" href="homememory.css">
+</head>
+<body>
+
+<!-- Settings Toggle -->
+<input type="checkbox" id="settingsToggle">
+
+<div class="menu-wrapper">
+
+    <!-- Coins -->
+<div class="top-bar">
+    💰 <span id="homeCoin">0</span>
+</div>
+
+    <h1 class="title">🧠 Animal Memory</h1>
+    <p class="subtitle">Match Cute Animals & Train Your Brain!</p>
+
+   <!-- PLAY Button -->
+<a href="javascript:void(0)" onclick="navTo('memory.html')" class="play-btn">▶ PLAY</a>
+
+<!-- ABOUT Button -->
+<a href="javascript:void(0)" onclick="navTo('../About/matchabout.html')" class="about-btn">ABOUT</a>
+
+    <!-- Bottom Buttons -->
+    <div class="bottom-menu">
+        <label for="settingsToggle" class="settings-btn">⚙ Settings</label>
+        <a href="javascript:void(0)" class="reset-btn" onclick="openResetModal()">🗑 Reset</a>
+    </div>
+
+    <div id="resetModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Reset Game?</h3>
+        <p>All your coins and progress will be lost!</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="confirmReset()" style="background: #ff6f91; color: white; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer;">Yes, Reset</button>
+            <button onclick="closeResetModal()" style="background: #ccc; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal">
+    <div class="modal-content">
+        <h3>Game Settings</h3>
+
+        <div class="setting-items">
+            <!-- onchange ထဲမှာ playSound() ကို ထည့်ပေးထားပါတယ် -->
+            <label><input type="checkbox" id="musicToggle" checked onchange="handleMusic(); playSound();"> Background Music</label>
+            <label><input type="checkbox" id="soundToggle" checked onchange="handleSFX(); playSound();"> Sound Effects</label>
+        </div>
+
+        <div class="divider"></div>
+
+<!-- မူလ Link နေရာမှာ ဒါလေး အစားထိုးပါ -->
+<a href="javascript:void(0)" onclick="navTo('../menu.html')" class="menu-link">🏠 Back to Menu</a>
+
+        <label for="settingsToggle" class="close-btn">Close</label>
+    </div>
+</div>
+
+<audio id="bgMusic" loop src="../music/memoryback.mp3"></audio> 
+<audio id="clickSound" src="../music/memory.wav"></audio>
+
+<script src="homememory.js"></script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+:root {
+    --pink: #ff6f91;
+    --peach: #ffa07a;
+    --gold: #ffd700;
+    --bg1: #ff9a9e;
+    --bg2: #fad0c4;
+    --white: #ffffff;
+    --cell-size: 75px;
+    --gap: 8px;
+    --radius: 18px;
+    --board-pad: 15px;
+    --glass: rgba(255,255,255,0.22);
+    --shadow: 0 15px 40px rgba(0,0,0,0.18);
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Background Animation */
+body::before {
+    content: "";
+    position: fixed; inset: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.18) 20%, transparent 20%);
+    background-size: 120px 120px;
+    animation: moveBg 22s linear infinite;
+    z-index: 0;
+}
+@keyframes moveBg {
+    from { transform: translate(0,0); }
+    to { transform: translate(-120px,-120px); }
+}
+
+/* Top Bar */
+.top-bar {
+    position: fixed; top: 12px;
+    width: min(600px, 95vw);
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+}
+
+.hud-pill {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 8px 18px; border-radius: 30px;
+    color: white; font-family: 'Fredoka One';
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+/* Timer Bar */
+.timer-container {
+    width: 160px; height: 24px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 20px; border: 2px solid white;
+    position: relative; overflow: hidden;
+}
+.timer-bar {
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    transition: width 1s linear;
+}
+#timerText {
+    position: absolute; inset: 0;
+    text-align: center; color: white;
+    font-weight: 800; font-size: 14px; line-height: 20px;
+}
+
+/* Game Area */
+.container {
+    position: relative; z-index: 2;
+    margin-top: 65px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.game-title { font-family: 'Fredoka One'; color: white; font-size: 1.8rem; }
+
+.board-wrapper { position: relative; padding: 10px; }
+.board {
+    display: grid;
+    grid-template-columns: repeat(6, var(--cell-size));
+    grid-template-rows: repeat(6, var(--cell-size));
+    gap: var(--gap);
+    background: rgba(255,255,255,0.22);
+    padding: var(--board-pad);
+    border-radius: 25px;
+    box-shadow: var(--shadow);
+}
+
+.cell {
+    width: var(--cell-size); height: var(--cell-size);
+    background: white; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: transform .2s;
+}
+.cell img { width: 80%; height: 80%; pointer-events: none; }
+.cell.selected {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px var(--pink);
+    background: #fff0f4;
+    z-index: 5;
+}
+
+#lineCanvas { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+
+/* Mission Box */
+.mission-box {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 10px 25px; border-radius: 25px;
+    display: flex; align-items: center; gap: 15px; color: white;
+    box-shadow: var(--shadow);
+}
+
+/* Popup Candy Crush Style */
+.overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display: none; z-index: 200; backdrop-filter: blur(4px);
+}
+.popup-candy {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 320px; background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 100%);
+    border: 6px solid white; border-radius: 40px;
+    padding: 30px; text-align: center; z-index: 201;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.popup-candy.show { transform: translate(-50%, -50%) scale(1); }
+.popup-candy h2 { font-family: 'Fredoka One'; color: white; font-size: 2.5rem; text-shadow: 3px 3px 0 #ff477e; }
+.star { display: inline-block; color: var(--gold); font-size: 35px; }
+.star.big { font-size: 55px; margin: 0 10px; }
+.btn-pink { 
+    background: var(--pink); color: white; border: none;
+    padding: 12px 30px; border-radius: 30px; font-family: 'Fredoka One';
+    cursor: pointer; margin-top: 15px; font-size: 1.1rem;
+}
+
+/* Settings */
+/* Crown Display Style (အပေါ်အလယ်က 👑 ပုံစံ) */
+.hud-pill {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: bold;
+}
+
+/* --- Settings Section (Cleaned Up) --- */
+
+.settings-icon {
+    font-size: 24px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+    z-index: 101;
+}
+
+/* Settings Panel - Glassmorphism အကြည်ရောင် */
+.settings-panel {
+    position: fixed;
+    top: 70px; 
+    left: 50%;
+    transform: translateX(min(200px, 35vw)); 
+    width: 240px;
+    padding: 25px;
+    border-radius: 35px;
+    
+    background: rgba(255, 255, 255, 0.25); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    
+    display: none;
+    z-index: 1000;
+}
+
+/* ၁။ ခေါင်းစဉ် (ပန်းရောင်) */
+.settings-panel h3 {
+    color: #ff6f91; 
+    font-family: 'Fredoka One', cursive;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-shadow: none; /* Shadow တွေရှိနေရင် ဖယ်ဖို့ */
+}
+
+/* ၂။ Music/Sound Rows (Pink Theme) */
+.settings-panel label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.4); 
+    border-radius: 20px;
+    color: white; /* စာသားကို အဖြူရောင်ထားခြင်း */
+    font-weight: 800;
+}
+
+/* ၃။ Toggle Switch (Pink Slider) */
+.toggle-wrap {
+    position: relative;
+    width: 44px;
+    height: 24px;
+}
+.toggle-wrap input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: rgba(0,0,0,0.2);
+    transition: .4s;
+    border-radius: 34px;
+}
+.slider:before {
+    position: absolute; content: "";
+    height: 18px; width: 18px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .slider {
+    background-color: #ff6f91; 
+}
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* ၄။ Back To Menu Button (အပြာရောင် + Underline ဖျောက်ထားသည်) */
+.settings-panel a {
+    text-decoration: none !important; /* လိုင်းကြီးကို ဖျောက်ဖို့ အဓိကနေရာ */
+    display: block;
+    width: 100%;
+}
+
+.menu-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    background: #0095ff; 
+    color: white;
+    font-family: 'Fredoka One';
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 149, 255, 0.4);
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important; /* ခလုတ်ထဲက လိုင်းကိုလည်း ဖျောက်မယ် */
+}
+
+.menu-btn:hover {
+    transform: scale(1.03);
+    background: #0081eb;
+    text-decoration: none !important;
+}
+
+/* Reset Button Style */
+.reset-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    background: #ffb3ba; /* Reset အတွက် သီးသန့်အရောင်နုလေး */
+    color: #444;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.reset-btn:hover {
+    background: #ff9aa2;
+    transform: scale(1.02);
+}
+
+/* Toggle Check */
+#settingsToggle:checked ~ .settings-panel {
+    display: block;
+}
+
+/* အောက်က Target box နဲ့ mission info တွေကို ဖျောက်လိုက်ခြင်း */
+.hud, .mission-box {
+    display: none !important;
+}
+
+/* အပေါ်က Crown Score ပိုထင်ရှားအောင် လုပ်ခြင်း */
+.top-bar .hud-pill:nth-child(3) {
+    background: rgba(255, 215, 0, 0.3); /* ရွှေရောင်သန်းသော logic */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 500px) {
+    :root { --cell-size: 55px; }
+    .popup-candy { width: 280px; }
+}
+
+/* Laser Beam Effect */
+.laser-beam {
+    position: fixed;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 5px white, 0 0 25px 10px #ff6f91; /* ပန်းရောင် Laser တန်းလေး */
+    opacity: 0;
+    pointer-events: none;
+    z-index: 151;
+}
+
+/* ဘေးတိုက် Laser */
+.laser-horiz { 
+    height: 10px; 
+    transform: translateY(-50%);
+    animation: laserFade 0.5s forwards; 
+}
+
+/* အထက်အောက် Laser */
+.laser-vert { 
+    width: 10px; 
+    transform: translateX(-50%);
+    animation: laserFade 0.5s forwards; 
+}
+
+@keyframes laserExpandHoriz {
+    0% { width: 0; opacity: 1; transform: translateY(-50%) scaleY(1); }
+    50% { width: 100%; opacity: 1; transform: translateY(-50%) scaleY(1.5); }
+    100% { width: 100%; opacity: 0; transform: translateY(-50%) scaleY(0); }
+}
+
+@keyframes laserExpandVert {
+    0% { height: 0; opacity: 1; transform: translateX(-50%) scaleX(1); }
+    50% { height: 100%; opacity: 1; transform: translateX(-50%) scaleX(1.5); }
+    100% { height: 100%; opacity: 0; transform: translateX(-50%) scaleX(0); }
+}
+
+/* Screen Shake Animation (အားပါသွားအောင်) */
+.shake-screen {
+    animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+@keyframes laserFade {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.2); }
+}
+
+

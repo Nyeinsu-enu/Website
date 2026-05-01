@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animal Dash</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dash.css">
+
+    <!-- Inline toggle-switch styles (reuse same pattern as memory.css) -->
+    <style>
+        /* Settings toggle rows */
+        .settings-dropdown label.toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 14px;
+            cursor: default;
+        }
+
+        /* Toggle wrapper */
+        .toggle-wrap {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle-wrap input[type="checkbox"] {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        /* Track */
+        .toggle-wrap .slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.25);
+            border-radius: 34px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 1px solid rgba(255,255,255,0.35);
+        }
+
+        /* Knob */
+        .toggle-wrap .slider::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+        }
+
+        /* ON state */
+        .toggle-wrap input:checked + .slider {
+            background: #4ade80;
+            border-color: #22c55e;
+        }
+
+        .toggle-wrap input:checked + .slider::before {
+            transform: translateY(-50%) translateX(20px);
+        }
+    </style>
+</head>
+<body>
+
+<input type="checkbox" id="settingsToggle" style="display:none;">
+
+<div class="top-bar">
+    <div class="left">
+        <span id="coinDisplay">0</span>
+        <span id="lifeDisplay">2</span>
+    </div>
+    <div class="right">
+        <label for="settingsToggle" class="icon-btn">⚙️</label>
+    </div>
+</div>
+
+<div class="settings-dropdown">
+    <h3 style="margin-bottom:15px; text-align:center; color:white;">⚙️ Settings</h3>
+
+    <label class="toggle">
+        🎵 BGM
+        <span class="toggle-wrap">
+            <input type="checkbox" checked onchange="setBGMMuted(!this.checked)">
+            <span class="slider"></span>
+        </span>
+    </label>
+
+    <label class="toggle">
+        🔊 Sound FX
+        <span class="toggle-wrap">
+            <input type="checkbox" checked onchange="sfx.setMuted(!this.checked)">
+            <span class="slider"></span>
+        </span>
+    </label>
+
+    <a href="../menu.html" class="menu-btn">🏠 Back To Menu</a>
+</div>
+
+<div class="game-wrapper">
+    <div class="game" id="game">
+        <div id="player"></div>
+    </div>
+</div>
+
+<div id="customAlert" class="confirm-overlay">
+    <div class="confirm-box">
+        <div class="confirm-icon"></div>
+        <h3></h3>
+        <p id="alertMessage"></p>
+        <div class="confirm-btns">
+            <button class="confirm-no" onclick="closeAlert()" style="background:#4caf50; width:100%;">OK</button>
+        </div>
+    </div>
+</div>
+
+<script src="dash.js"></script>
+</body>
+</html>

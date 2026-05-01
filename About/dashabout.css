@@ -1,0 +1,96 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:url("background.jpg") no-repeat center center/cover;
+    color:white;
+    position:relative;
+}
+
+/* Overlay */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    backdrop-filter:blur(5px);
+    z-index:0;
+}
+
+/* Header */
+.about-header{
+    text-align:center;
+    padding:50px 20px 20px;
+    position:relative;
+    z-index:1;
+}
+.about-header h1{
+    font-size:44px;
+    color:#ffd93d;
+}
+.tagline{
+    margin-top:10px;
+    font-size:18px;
+    opacity:0.9;
+}
+
+/* Main Container */
+.about-container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+    position:relative;
+    z-index:1;
+}
+
+/* Cards */
+.about-card{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(12px);
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:18px;
+}
+
+/* Headings */
+.about-card h2{
+    margin-bottom:12px;
+    color:#ffde59;
+}
+
+/* Lists */
+.about-card ul,
+.about-card ol{
+    margin-left:20px;
+    line-height:1.6;
+}
+
+/* Button */
+.btn-area{
+    text-align:center;
+    margin-top:25px;
+}
+.back-btn{
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(45deg,#ff6b6b,#ff9f43);
+    color:white;
+    text-decoration:none;
+    display:inline-block;
+    cursor:pointer;
+}
+.back-btn:hover{
+    transform:scale(1.05);
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .about-header h1{font-size:32px;}
+    .about-card{padding:18px;}
+    .back-btn{width:100%; text-align:center;}
+}

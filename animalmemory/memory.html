@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Memory</title>
+    <link rel="stylesheet" href="memory.css">
+</head>
+<body>
+
+<!-- Settings Button ကို နှိပ်ရင် toggleSettings() ခေါ်ဖို့ အဆင်သင့်ပါပဲ -->
+<div class="game-header">
+    <h1>🐾 Animal Memory</h1>
+    <div class="top-bar">
+        <div class="stat" id="coinValue">💰 100</div>
+        <div class="stat" id="timerDisplay">⏳ 60s</div>
+        <div class="stat">⭐ <span id="stars">0</span></div>
+        <button class="booster-btn" onclick="useEyeBooster()">👁 Reveal (5⭐)</button>
+        <label class="settings-icon" style="cursor:pointer;" onclick="toggleSettings()">⚙️</label>
+    </div>
+</div>
+
+<!-- Settings Panel ကို အောက်ပါအတိုင်း ပြင်ပါ -->
+<div class="settings-panel">
+    <h3>⚙️ Settings</h3>
+    
+    <div class="settings-row">
+        <span>🎵 BGM</span>
+        <span class="toggle-wrap">
+            <!-- ID ကို bgmToggle လို့ ပေးထားပါတယ် -->
+            <input type="checkbox" id="bgmToggle" checked onchange="setBGMMuted(!this.checked)">
+            <label for="bgmToggle" class="slider"></label>
+        </span>
+    </div>
+
+    <div class="settings-row">
+        <span>🔊 Sound FX</span>
+        <span class="toggle-wrap">
+            <!-- ID ကို sfxToggle လို့ ပြောင်းထားပြီး function ကိုလည်း sfx.setMuted ပြောင်းထားပါတယ် -->
+            <input type="checkbox" id="sfxToggle" checked onchange="sfx.setMuted(!this.checked)">
+            <label for="sfxToggle" class="slider"></label>
+        </span>
+    </div>
+
+    <a href="../menu.html" class="menu-btn">🏠 Back To Menu</a>
+</div>
+
+<div class="board" id="board"></div>
+
+<div id="resultBox" class="result-box hidden">
+    <h2>🎉 Victory!</h2>
+    <p id="finalScore"></p>
+    <button onclick="location.reload()">🔄 Play Again</button>
+</div>
+
+<script src="memory.js"></script>
+</body>
+</html>

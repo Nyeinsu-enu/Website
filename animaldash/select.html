@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Dash</title>
+    <link rel="stylesheet" href="select.css">
+</head>
+<body onload="initCoins()">
+
+<div class="overlay"></div>
+
+<input type="checkbox" id="settingsToggle">
+
+<div class="top-bar">
+    <div class="coins">💰 <span id="coinText">100</span></div>
+
+    <div class="top-actions">
+        <button class="reset-btn" onclick="resetGame()">
+            🗑 <span class="reset-text">Reset</span>
+        </button>
+<!-- onclick="playSound()" ထည့်လိုက်ပါတယ် -->
+<label for="settingsToggle" class="settings-icon" onclick="playSound()">⚙</label>
+    </div>
+</div>
+
+<div class="settings-popup">
+    <div class="popup-box">
+        <h3>Game Settings</h3>
+        <!-- Settings Popup ထဲက Checkbox တွေကို ID နှင့် Function တပ်ပါ -->
+        <div class="setting-item">
+            <input type="checkbox" id="music" checked onchange="handleMusic(); playSound();">
+            <label for="music">Background Music</label>
+        </div>
+        <div class="setting-item">
+            <input type="checkbox" id="sound" checked onchange="handleSFX();">
+            <label for="sound">Sound Effects</label>
+        </div>
+
+        <!-- Back to Menu button မှာ အသံထည့်ရန် navTo သုံးပါ -->
+        <div class="popup-footer">
+            <a href="javascript:void(0)" onclick="navTo('../Menu.html')" class="back-menu-btn">🏠 Back to Menu</a>
+            <label for="settingsToggle" class="close-btn" onclick="playSound()">Close</label>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <h1 class="game-title">🏃 Animal Dash</h1>
+    <h2 class="sub-title">Choose Your Hero</h2>
+
+    <input type="radio" name="hero" id="dog" checked>
+    <input type="radio" name="hero" id="frog">
+    <input type="radio" name="hero" id="fox">
+
+    <div class="animal-grid">
+    <!-- Dog (Unlocked) -->
+    <label for="dog" class="card active-hero" id="dogCard" onclick="selectHero('dog')">
+        <div class="emoji">🐶</div>
+        <h3>Dog</h3>
+        <p>Balanced</p>
+    </label>
+
+    <!-- Frog (Locked)  -->
+   <label for="frog" class="card" id="frogCard" onclick="selectHero('frog')">
+        <div class="emoji">🐸</div>
+        <h3>Frog</h3>
+        <p>High Jump</p>
+        <span class="lock" id="frogLock">🔒 300</span>
+    </label>
+
+    <!-- Fox (Locked)  -->
+    <label for="fox" class="card" id="foxCard" onclick="selectHero('fox')">
+        <div class="emoji">🦊</div>
+        <h3>Fox</h3>
+        <p>Fast</p>
+        <span class="lock" id="foxLock">🔒 500</span>
+    </label>
+</div>
+
+    <!-- START & ABOUT Buttons မှာ navTo ပြောင်းသုံးပါ -->
+    <div class="button-group">
+        <a href="javascript:void(0)" onclick="navTo('dash.html')" class="start-btn">START GAME</a>
+        <a href="javascript:void(0)" onclick="navTo('../About/dashabout.html')" class="about-btn">ABOUT</a>
+    </div>
+</div>
+
+<div id="customConfirm" class="confirm-overlay">
+    <div class="confirm-box">
+        <div class="confirm-icon">⚠️</div>
+        <h3>Reset Progress?</h3>
+        <p>Are you sure you want to reset everything? Your coins will return to 100.</p>
+        <div class="confirm-btns">
+            <button class="confirm-yes" onclick="executeReset()">Yes, Reset</button>
+            <button class="confirm-no" onclick="closeConfirm()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="customAlert" class="confirm-overlay">
+    <div class="confirm-box">
+        <div class="confirm-icon"></div> <h3 style="color: #ff9800;">Info</h3>
+        <p id="alertMessage">Progress has already been reset!</p>
+        <div class="confirm-btns">
+            <button class="confirm-no" onclick="closeAlert()" style="background: #4caf50; width: 100%;">OK</button>
+        </div>
+    </div>
+</div>
+
+<audio id="bgMusic" loop src="../music/dashback.mp3"></audio> 
+<audio id="clickSound" src="../music/dash.wav"></audio>
+
+<script src="select.js"></script>
+</body>
+</html>

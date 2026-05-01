@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animal Fun World</title>
+<link rel="stylesheet" href="menu.css">
+</head>
+<body>
+
+<!-- ===== START SCREEN ===== -->
+<!--
+    display:none အစကတည်းက hidden ဖြစ်နေမယ်။
+    JS IIFE က seenOverlay မရှိရင်သာ flex ပြပြန်မယ်။
+    ဒါဆို Back to Menu နှိပ်တဲ့အခါ flash လုံးဝမဖြစ်တော့ဘူး။
+-->
+<div id="welcome-overlay" onclick="startEverything()" style="display: none;">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="overlay-content">
+        <h1 class="game-title">🐾 Animal Fun World 🐾</h1>
+        <div class="start-button-wrapper">
+            <div class="start-button">
+                <p class="start-text">TAP TO START</p>
+            </div>
+            <div class="start-pulse-ring"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MENU ===== -->
+<div class="menu-container">
+    <h1 class="title">🐾 Animal Fun World 🐾</h1>
+    <p class="subtitle">Choose Your Game!</p>
+    <div class="game-grid">
+        <div class="game-card" onclick="goToBlitz()">
+            <h2>🧩 Animal Blitz</h2>
+            <p>Match 3 Puzzle Game</p>
+        </div>
+        <div class="game-card" onclick="goToMemory()">
+            <h2>🧠 Animal Memory</h2>
+            <p>Flip & Match Cards</p>
+        </div>
+        <div class="game-card" onclick="goToDash()">
+            <h2>🏃 Animal Dash</h2>
+            <p>Endless Runner Style</p>
+        </div>
+    </div>
+    <div class="bottom-bar">
+        <button onclick="toggleMusic()">🎵 Music Off</button>
+        <button onclick="toggleTheme()">🌙 Theme</button>
+    </div>
+</div>
+
+
+
+<script src="menu.js"></script>
+</body>
+</html>

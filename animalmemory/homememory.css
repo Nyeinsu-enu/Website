@@ -1,0 +1,176 @@
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    overflow:hidden;
+    color:white;
+}
+
+/* Animated Background */
+body::before{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle,rgba(255,255,255,0.1) 20%,transparent 20%);
+    background-size:150px 150px;
+    animation:moveBg 25s linear infinite;
+}
+
+@keyframes moveBg{
+    from{transform:translate(0,0);}
+    to{transform:translate(-200px,-200px);}
+}
+
+.menu-wrapper{
+    text-align:center;
+    z-index:2;
+}
+
+.top-bar{
+    position:absolute;
+    top:20px;
+    right:30px;
+    background:rgba(255,255,255,0.2);
+    padding:8px 20px;
+    border-radius:25px;
+    backdrop-filter:blur(10px);
+    font-weight:bold;
+}
+
+.title{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    margin-bottom:40px;
+    font-size:18px;
+    opacity:0.9;
+}
+
+/* Hide checkbox */
+#settingsToggle{
+    display:none;
+}
+
+/* Button Style (for a + label) */
+.play-btn,
+.about-btn,
+.settings-btn,
+.reset-btn{
+    width:250px;
+    padding:15px 0;
+    margin:10px auto;
+    font-size:20px;
+    font-weight:bold;
+    border-radius:50px;
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    transition:0.3s;
+    letter-spacing:1px;
+}
+
+/* PLAY */
+.play-btn{
+    background:linear-gradient(45deg,#ff6f91,#ff9671);
+    color:white;
+}
+
+/* ABOUT */
+.about-btn{
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+}
+
+/* Bottom menu */
+.bottom-menu{
+    margin-top:40px;
+    display:flex;
+    gap:20px;
+    justify-content:center;
+}
+
+/* Settings & Reset */
+.settings-btn,
+.reset-btn{
+    padding:10px 25px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    cursor:pointer;
+}
+
+/* Hover */
+.play-btn:hover,
+.about-btn:hover,
+.settings-btn:hover,
+.reset-btn:hover{
+    transform:scale(1.05);
+    filter:brightness(1.1);
+}
+
+/* Modal */
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:5;
+}
+
+/* Toggle modal */
+#settingsToggle:checked ~ .modal{
+    display:flex;
+}
+
+.modal-content{
+    background:white;
+    color:black;
+    padding:30px;
+    border-radius:20px;
+    width:280px;
+    text-align:center;
+}
+
+.modal-content label{
+    display:block;
+    margin:15px 0;
+}
+
+.close-btn{
+    margin-top: 5px;
+    padding: 10px 25px;
+    border-radius: 15px;
+    background:#667eea;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+/* Back to Menu Link Style */
+.menu-link {
+    display: block;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    padding: 12px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.menu-link:hover {
+    transform: scale(1.03);
+    filter: brightness(1.1);
+}

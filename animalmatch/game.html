@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Blitz 🐾</title>
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<input type="checkbox" id="settingsToggle" hidden>
+
+<div class="top-bar">
+    <span class="hud-pill">💰 <span id="moneyValue">0</span></span>
+    
+    <div class="timer-container">
+        <div class="timer-bar" id="timerBar"></div>
+        <span id="timerText">3:00</span>
+    </div>
+
+    <span class="hud-pill">👑 <span id="crownCount">0</span></span>
+    
+    <label for="settingsToggle" class="settings-icon">⚙️</label>
+</div>
+
+<div class="settings-panel">
+    <h3>⚙️ Settings</h3>
+    <label>
+        🎵 Music
+        <span class="toggle-wrap">
+            <input type="checkbox" checked onchange="document.getElementById('bgMusic').muted = !this.checked">
+            <span class="slider"></span>
+        </span>
+    </label>
+    <label>
+        🔊 Sound FX
+        <span class="toggle-wrap">
+            <!-- ✅ Fixed: now calls sfx.setMuted() instead of muting the unused <audio> element -->
+            <input type="checkbox" checked onchange="sfx.setMuted(!this.checked)">
+            <span class="slider"></span>
+        </span>
+    </label>
+    <a href="../menu.html"><button class="menu-btn">🏠 Back To Menu</button></a>
+    
+    <button class="reset-btn" onclick="resetGame()">
+        <i class="fas fa-coins"></i> Reset Coins
+    </button>
+</div>
+
+<div class="container" id="mainContainer">
+    <h1 class="game-title">Animal Blitz 🐾</h1>
+
+    <div class="mission-bar" id="missionBar">
+        🎯 Mission: Collect 3 crown animals!
+    </div>
+
+    <div class="board-wrapper" id="boardWrapper">
+        <canvas id="lineCanvas"></canvas>
+        <div id="board" class="board"></div>
+    </div>
+
+    <div class="hud">
+        <div class="mission-box">
+            <p style="margin:0; font-size: 14px;">Target</p>
+            <img id="missionAnimal" src="" width="40" height="40">
+            <span id="crownProgressText" style="font-family: 'Fredoka One'; font-size: 1.2rem;">0/3</span>
+        </div>
+    </div>
+</div>
+
+<div id="effectContainer" style="position: fixed; inset: 0; pointer-events: none; z-index: 150;"></div>
+
+<div class="overlay" id="overlay"></div>
+<div class="popup-candy" id="missionPopup">
+    <div class="popup-content">
+      <div class="star-container" id="popupIconContainer">
+          <div id="statusEmoji" style="font-size: 70px; margin-bottom: 10px; display: block;">🥳</div>
+      </div>
+        <h2 id="popupTitle">SWEET!</h2>
+        <p id="popupSub">Mission Complete</p>
+        <div class="popup-buttons">
+            <button class="btn btn-pink" onclick="location.reload()">NEXT LEVEL</button>
+        </div>
+    </div>
+</div>
+
+<audio id="bgMusic" autoplay loop><source src="../music/blitzgameback.mp3" type="audio/mpeg"></audio>
+
+<script src="game.js"></script>
+</body>
+</html>
