@@ -67,7 +67,7 @@ function playSound() {
 function backToMenu() {
     let confirmLeave = confirm("Are you sure you want to exit to menu? Your current progress will be lost.");
     if (confirmLeave) {
-        window.location.href = "../menu.html";
+        window.location.href = "../index.html";
     }
 }
 

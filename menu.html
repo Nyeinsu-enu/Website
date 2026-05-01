@@ -1,38 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animal Fun World</title>
-<link rel="stylesheet" href="menu.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="./animalmatch/style.css">
 </head>
 <body>
 
 
-<!-- ===== MENU ===== -->
-<div class="menu-container">
-    <h1 class="title">🐾 Animal Fun World 🐾</h1>
-    <p class="subtitle">Choose Your Game!</p>
-    <div class="game-grid">
-        <div class="game-card" onclick="goToBlitz()">
-            <h2>🧩 Animal Blitz</h2>
-            <p>Match 3 Puzzle Game</p>
-        </div>
-        <div class="game-card" onclick="goToMemory()">
-            <h2>🧠 Animal Memory</h2>
-            <p>Flip & Match Cards</p>
-        </div>
-        <div class="game-card" onclick="goToDash()">
-            <h2>🏃 Animal Dash</h2>
-            <p>Endless Runner Style</p>
-        </div>
-    </div>
-    <div class="bottom-bar">
-        <button onclick="toggleMusic()">🎵 Music Off</button>
-        <button onclick="toggleTheme()">🌙 Theme</button>
-    </div>
-</div>
 
-<script src="menu.js"></script>
+
+    <!-- Dark Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="money-box">💰 <span id="moneyValue">0</span></div>
+        <div class="settings-icon" onclick="toggleSettings(); playSound();">⚙</div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <h2><span class="icon"></span> GAME SETTINGS</h2>
+
+        <div class="settings-content">
+            <div class="setting-item">
+                <label for="musicToggle">
+                    <span class="item-icon"></span> BACKGROUND MUSIC
+                </label>
+                <input type="checkbox" id="musicToggle" checked onchange="handleMusic(); playSound();">
+            </div>
+            <div class="setting-item">
+                <label for="soundToggle">
+                    <span class="item-icon"></span> SOUND EFFECTS
+                </label>
+                <input type="checkbox" id="soundToggle" checked onchange="handleSFX();">
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="settings-buttons">
+            <!-- a tag ရဲ့ href ကို ဖယ်ပြီး onclick နဲ့ navTo function ကို သုံးမယ် -->
+            <button class="menu-back-btn" onclick="navTo('index.html')">BACK TO MENU</button>
+            <button onclick="toggleSettings(); playSound();" class="close-panel-btn">✕ CLOSE</button>
+        </div>
+    </div>
+
+    <!-- Center Menu -->
+    <div class="menu">
+        <button class="play-btn" onclick="playSound(); setTimeout(() => window.location.href='./animalmatch/game.html', 200);">▶ PLAY</button>
+        <button class="about-btn" onclick="playSound(); setTimeout(() => window.location.href='../About/Blitzabout.html', 200);">ABOUT</button>
+    </div>
+
+    <audio id="bgMusic" loop src="../music/blitzback.mp3"></audio>
+    <audio id="clickSound" src="../music/blitz.wav"></audio>
+
+    <script src="./animalmatch/index.js"></script>
 </body>
 </html>
