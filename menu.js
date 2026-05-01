@@ -82,7 +82,7 @@ function goToBlitz() {
     localStorage.setItem("shouldPlayMusic", "true");
     clickSound.currentTime = 0;
     clickSound.play();
-    window.location.href = "./animalmatch/index.html";
+    window.location.href = "index.html";
 }
 
 function goToMemory() {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./animalmatch/style.css">
 </head>
 <body>
 
@@ -40,20 +40,20 @@
 
         <div class="settings-buttons">
             <!-- a tag ရဲ့ href ကို ဖယ်ပြီး onclick နဲ့ navTo function ကို သုံးမယ် -->
-            <button class="menu-back-btn" onclick="navTo('../menu.html')">BACK TO MENU</button>
+            <button class="menu-back-btn" onclick="navTo('menu.html')">BACK TO MENU</button>
             <button onclick="toggleSettings(); playSound();" class="close-panel-btn">✕ CLOSE</button>
         </div>
     </div>
 
     <!-- Center Menu -->
     <div class="menu">
-        <button class="play-btn" onclick="playSound(); setTimeout(() => window.location.href='game.html', 200);">▶ PLAY</button>
+        <button class="play-btn" onclick="playSound(); setTimeout(() => window.location.href='./animalmatch/game.html', 200);">▶ PLAY</button>
         <button class="about-btn" onclick="playSound(); setTimeout(() => window.location.href='../About/Blitzabout.html', 200);">ABOUT</button>
     </div>
 
     <audio id="bgMusic" loop src="../music/blitzback.mp3"></audio>
     <audio id="clickSound" src="../music/blitz.wav"></audio>
 
-    <script src="./index.js"></script>
+    <script src="./animalmatch/index.js"></script>
 </body>
 </html>
